@@ -223,6 +223,128 @@
         background: #151615;
       }
 
+      .demo-library {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .player-panel,
+      .selector-panel,
+      .active-demo {
+        display: grid;
+        gap: 14px;
+      }
+
+      .video-shell {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+        background: #151615;
+      }
+
+      .video-shell video {
+        display: block;
+        aspect-ratio: 9 / 16;
+        width: 100%;
+        max-height: 78svh;
+        object-fit: contain;
+        border: 0;
+        border-radius: 6px;
+      }
+
+      .active-demo {
+        border: 1px solid var(--line);
+        border-left: 7px solid var(--teal);
+        border-radius: 8px;
+        padding: 20px;
+        background: var(--surface);
+      }
+
+      .tag-row,
+      .short-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: var(--quiet);
+        color: var(--muted);
+        font:
+          700 0.75rem/1 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
+      }
+
+      .demo-note {
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .short-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .short-card {
+        min-height: 168px;
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: var(--surface);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+      }
+
+      .short-card:hover,
+      .short-card[aria-pressed='true'] {
+        border-color: var(--teal);
+        background: #f3f7f2;
+      }
+
+      .short-card[aria-pressed='true'] {
+        box-shadow: inset 0 0 0 2px rgba(14, 104, 96, 0.18);
+      }
+
+      .short-card:focus-visible {
+        outline: 3px solid rgba(53, 70, 165, 0.38);
+        outline-offset: 3px;
+      }
+
+      .short-card-title,
+      .short-card-audience {
+        display: block;
+      }
+
+      .short-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.18;
+      }
+
+      .short-card-audience {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.35;
+      }
+
       footer {
         border-top: 1px solid var(--line);
         padding-block: 24px 38px;
@@ -242,7 +364,12 @@
         }
 
         .grid,
-        .two-col {
+        .two-col,
+        .demo-library {
+          grid-template-columns: 1fr;
+        }
+
+        .short-grid {
           grid-template-columns: 1fr;
         }
 
@@ -278,7 +405,7 @@
         </p>
         <div class="button-row">
           <a class="button" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0A%0AWhere%20did%20you%20get%20stuck%3F%0A%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0A%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0A">Send beta feedback</a>
-          <a class="button secondary" href="../demo/">Watch demo</a>
+          <a class="button secondary" href="../demo/">Choose a demo</a>
         </div>
       </section>
       <section class="grid" aria-label="Required beta tasks">

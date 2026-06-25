@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Routine Pilot Demo</title>
-    <meta name="description" content="Watch the Routine Pilot beta demo showing a timed cue routine running over external music." />
+    <title>Routine Pilot Demo Library</title>
+    <meta name="description" content="Choose a Routine Pilot beta short demo for music playback, routine handoff, movement, strength, breathwork, facilitation, teaching, focus, or home-program workflows." />
     <link rel="icon" href="../favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="../favicon.png" />
     <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
@@ -223,6 +223,128 @@
         background: #151615;
       }
 
+      .demo-library {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .player-panel,
+      .selector-panel,
+      .active-demo {
+        display: grid;
+        gap: 14px;
+      }
+
+      .video-shell {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+        background: #151615;
+      }
+
+      .video-shell video {
+        display: block;
+        aspect-ratio: 9 / 16;
+        width: 100%;
+        max-height: 78svh;
+        object-fit: contain;
+        border: 0;
+        border-radius: 6px;
+      }
+
+      .active-demo {
+        border: 1px solid var(--line);
+        border-left: 7px solid var(--teal);
+        border-radius: 8px;
+        padding: 20px;
+        background: var(--surface);
+      }
+
+      .tag-row,
+      .short-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: var(--quiet);
+        color: var(--muted);
+        font:
+          700 0.75rem/1 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
+      }
+
+      .demo-note {
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .short-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .short-card {
+        min-height: 168px;
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: var(--surface);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+      }
+
+      .short-card:hover,
+      .short-card[aria-pressed='true'] {
+        border-color: var(--teal);
+        background: #f3f7f2;
+      }
+
+      .short-card[aria-pressed='true'] {
+        box-shadow: inset 0 0 0 2px rgba(14, 104, 96, 0.18);
+      }
+
+      .short-card:focus-visible {
+        outline: 3px solid rgba(53, 70, 165, 0.38);
+        outline-offset: 3px;
+      }
+
+      .short-card-title,
+      .short-card-audience {
+        display: block;
+      }
+
+      .short-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.18;
+      }
+
+      .short-card-audience {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.35;
+      }
+
       footer {
         border-top: 1px solid var(--line);
         padding-block: 24px 38px;
@@ -242,7 +364,12 @@
         }
 
         .grid,
-        .two-col {
+        .two-col,
+        .demo-library {
+          grid-template-columns: 1fr;
+        }
+
+        .short-grid {
           grid-template-columns: 1fr;
         }
 
@@ -271,20 +398,286 @@
     <main>
       <section class="hero">
         <p class="meta">Demo</p>
-        <h1>Mobility over music demo</h1>
+        <h1>Choose a short demo.</h1>
         <p class="lead">
-          A short beta walkthrough showing Routine Pilot cues running while music keeps playing
-          outside the app.
+          Pick the Routine Pilot beta workflow that feels closest to how you coach, teach,
+          facilitate, practice, focus, or hand off repeatable routines.
         </p>
         <div class="button-row">
           <a class="button" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0A%0AWhere%20did%20you%20get%20stuck%3F%0A%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0A%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0A">Send feedback</a>
           <a class="button secondary" href="../">Back to beta page</a>
         </div>
       </section>
-      <video controls playsinline preload="metadata" poster="../assets/screenshots/playback.png">
-        <source src="../assets/demo/mobility-over-music.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video></main>
+      <section class="demo-library" aria-label="Routine Pilot beta short demos">
+        <div class="player-panel">
+          <div class="video-shell">
+            <video
+              id="demo-video"
+              controls
+              playsinline
+              preload="metadata"
+              poster="../assets/screenshots/playback.png"
+            >
+              <source
+                id="demo-video-source"
+                src="../assets/demo/mobility-over-music.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <article class="active-demo" aria-live="polite">
+            <p class="meta" id="demo-audience">Coaches and music-friendly playback</p>
+            <h2 id="demo-title">Mobility over music</h2>
+            <div class="tag-row" aria-label="Selected demo details">
+              <span class="tag" id="demo-group">music/playback</span>
+              <span class="tag" id="demo-duration">0:30</span>
+            </div>
+            <p id="demo-description">Run a mobility or warmup routine while music keeps playing outside Routine Pilot.</p>
+            <p id="demo-cta">Try one routine over music, then tell us whether the cues stayed clear.</p>
+            <p class="demo-note" id="demo-note" hidden></p>
+          </article>
+        </div>
+        <div class="selector-panel">
+          <div>
+            <p class="meta">Short library</p>
+            <h2>Find the workflow that resonates.</h2>
+          </div>
+          <div class="short-grid" aria-label="Choose a beta short demo">
+            
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="mobility-over-music"
+            aria-pressed="true"
+          >
+            <span class="short-card-meta">
+              <span class="tag">music/playback</span>
+              <span class="tag">0:30</span>
+            </span>
+            <span class="short-card-title">Mobility over music</span>
+            <span class="short-card-audience">Coaches and music-friendly playback</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="repeatable-routine-handoff"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">routine handoff</span>
+              <span class="tag">0:35</span>
+            </span>
+            <span class="short-card-title">Repeatable routine handoff</span>
+            <span class="short-card-audience">People handing routines to someone else</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-hiit-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">movement</span>
+              <span class="tag">1:26</span>
+            </span>
+            <span class="short-card-title">Build a custom HIIT routine</span>
+            <span class="short-card-audience">Interval training and conditioning</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-sun-salutation-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">movement</span>
+              <span class="tag">1:13</span>
+            </span>
+            <span class="short-card-title">Build a custom sun salutation routine</span>
+            <span class="short-card-audience">Yoga and guided movement</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-full-body-stretch-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">movement</span>
+              <span class="tag">1:18</span>
+            </span>
+            <span class="short-card-title">Build a custom full body stretch routine</span>
+            <span class="short-card-audience">Stretching and recovery</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-balance-basics-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">movement</span>
+              <span class="tag">1:16</span>
+            </span>
+            <span class="short-card-title">Build a custom balance basics routine</span>
+            <span class="short-card-audience">Balance and low-equipment sessions</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-strength-builder-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">strength</span>
+              <span class="tag">1:28</span>
+            </span>
+            <span class="short-card-title">Build a custom strength builder routine</span>
+            <span class="short-card-audience">Bodyweight strength sessions</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-mobility-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">movement</span>
+              <span class="tag">1:19</span>
+            </span>
+            <span class="short-card-title">Build a custom mobility routine</span>
+            <span class="short-card-audience">Mobility flows and warmups</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-home-pt-template-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">home-program template</span>
+              <span class="tag">1:12</span>
+            </span>
+            <span class="short-card-title">Build a custom home PT template routine</span>
+            <span class="short-card-audience">Generic home-program timing</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-box-breathing-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">breathwork</span>
+              <span class="tag">1:17</span>
+            </span>
+            <span class="short-card-title">Build a custom box breathing routine</span>
+            <span class="short-card-audience">Breathwork pacing</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-meeting-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">facilitation</span>
+              <span class="tag">1:01</span>
+            </span>
+            <span class="short-card-title">Build a custom meeting routine</span>
+            <span class="short-card-audience">Meetings and facilitated sessions</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-classroom-lesson-flow"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">teaching</span>
+              <span class="tag">0:59</span>
+            </span>
+            <span class="short-card-title">Build a custom classroom lesson flow</span>
+            <span class="short-card-audience">Teachers and workshop leads</span>
+          </button>
+          <button
+            type="button"
+            class="short-card"
+            data-short-slug="build-custom-pomodoro-routine"
+            aria-pressed="false"
+          >
+            <span class="short-card-meta">
+              <span class="tag">focus</span>
+              <span class="tag">0:54</span>
+            </span>
+            <span class="short-card-title">Build a custom Pomodoro routine</span>
+            <span class="short-card-audience">Personal focus routines</span>
+          </button>
+          </div>
+        </div>
+      </section>
+      <script>
+        const demoShorts = [{"audienceLabel":"Coaches and music-friendly playback","cta":"Try one routine over music, then tell us whether the cues stayed clear.","description":"Run a mobility or warmup routine while music keeps playing outside Routine Pilot.","duration":"0:30","group":"music/playback","slug":"mobility-over-music","sourcePath":"docs/release/beta-shorts/mobility-over-music/mobility-over-music.mp4","title":"Mobility over music","videoSrc":"../assets/demo/mobility-over-music.mp4"},{"audienceLabel":"People handing routines to someone else","cta":"Try sending one non-sensitive sample routine to yourself or a test device.","description":"See local export and import as today's handoff path for clients, students, classes, or groups.","duration":"0:35","group":"routine handoff","slug":"repeatable-routine-handoff","sourcePath":"docs/release/beta-shorts/repeatable-routine-handoff/repeatable-routine-handoff.mp4","title":"Repeatable routine handoff","videoSrc":"../assets/demo/repeatable-routine-handoff.mp4"},{"audienceLabel":"Interval training and conditioning","cta":"Build one interval routine from scratch and run it all the way through.","description":"Create a 20-minute beginner HIIT routine, save it, play it, and step through every cue.","duration":"1:26","group":"movement","slug":"build-custom-hiit-routine","sourcePath":"docs/release/beta-shorts/build-custom-hiit-routine/build-custom-hiit-routine.mp4","title":"Build a custom HIIT routine","videoSrc":"../assets/demo/build-custom-hiit-routine.mp4"},{"audienceLabel":"Yoga and guided movement","cta":"Build one yoga or mobility routine from scratch and report what felt clear.","description":"Create a 10-minute sun salutation flow, save it, play it, and step through every cue.","duration":"1:13","group":"movement","slug":"build-custom-sun-salutation-routine","sourcePath":"docs/release/beta-shorts/build-custom-sun-salutation-routine/build-custom-sun-salutation-routine.mp4","title":"Build a custom sun salutation routine","videoSrc":"../assets/demo/build-custom-sun-salutation-routine.mp4"},{"audienceLabel":"Stretching and recovery","cta":"Build one stretch or recovery routine and run it from the Library.","description":"Create a 10-minute daily full body stretch routine, save it, play it, and step through every cue.","duration":"1:18","group":"movement","slug":"build-custom-full-body-stretch-routine","sourcePath":"docs/release/beta-shorts/build-custom-full-body-stretch-routine/build-custom-full-body-stretch-routine.mp4","title":"Build a custom full body stretch routine","videoSrc":"../assets/demo/build-custom-full-body-stretch-routine.mp4"},{"audienceLabel":"Balance and low-equipment sessions","cta":"Build one balance routine from scratch and tell us where setup slowed you down.","description":"Create a 10-minute balance basics routine, save it, play it, and step through every cue.","duration":"1:16","group":"movement","slug":"build-custom-balance-basics-routine","sourcePath":"docs/release/beta-shorts/build-custom-balance-basics-routine/build-custom-balance-basics-routine.mp4","title":"Build a custom balance basics routine","videoSrc":"../assets/demo/build-custom-balance-basics-routine.mp4"},{"audienceLabel":"Bodyweight strength sessions","cta":"Build one strength routine from scratch and report whether playback matched your plan.","description":"Create a 12-minute bodyweight strength builder routine, save it, play it, and step through every cue.","duration":"1:28","group":"strength","slug":"build-custom-strength-builder-routine","sourcePath":"docs/release/beta-shorts/build-custom-strength-builder-routine/build-custom-strength-builder-routine.mp4","title":"Build a custom strength builder routine","videoSrc":"../assets/demo/build-custom-strength-builder-routine.mp4"},{"audienceLabel":"Mobility flows and warmups","cta":"Build one mobility routine and tell us whether the create-and-run loop holds up.","description":"Create a 10-minute full body mobility routine, save it, play it, and step through every cue.","duration":"1:19","group":"movement","slug":"build-custom-mobility-routine","sourcePath":"docs/release/beta-shorts/build-custom-mobility-routine/build-custom-mobility-routine.mp4","title":"Build a custom mobility routine","videoSrc":"../assets/demo/build-custom-mobility-routine.mp4"},{"audienceLabel":"Generic home-program timing","cta":"Build one non-sensitive home-program timing template and report handoff friction.","description":"Create a 15-minute home PT template routine, save it, play it, and step through every cue.","duration":"1:12","group":"home-program template","note":"Use only non-sensitive sample routines; do not include private health details.","slug":"build-custom-home-pt-template-routine","sourcePath":"docs/release/beta-shorts/build-custom-home-pt-template-routine/build-custom-home-pt-template-routine.mp4","title":"Build a custom home PT template routine","videoSrc":"../assets/demo/build-custom-home-pt-template-routine.mp4"},{"audienceLabel":"Breathwork pacing","cta":"Build one beginner-safe breathwork routine and tell us whether pacing felt clear.","description":"Create a box breathing routine, save it, play it, and step through every cue.","duration":"1:17","group":"breathwork","slug":"build-custom-box-breathing-routine","sourcePath":"docs/release/beta-shorts/build-custom-box-breathing-routine/build-custom-box-breathing-routine.mp4","title":"Build a custom box breathing routine","videoSrc":"../assets/demo/build-custom-box-breathing-routine.mp4"},{"audienceLabel":"Meetings and facilitated sessions","cta":"Build one meeting or facilitation routine and report whether cues reduce clock-watching.","description":"Create a simple meeting routine, save it, play it, and step through every cue.","duration":"1:01","group":"facilitation","slug":"build-custom-meeting-routine","sourcePath":"docs/release/beta-shorts/build-custom-meeting-routine/build-custom-meeting-routine.mp4","title":"Build a custom meeting routine","videoSrc":"../assets/demo/build-custom-meeting-routine.mp4"},{"audienceLabel":"Teachers and workshop leads","cta":"Build one classroom or teaching routine and report whether the flow feels usable.","description":"Create a 45-minute classroom lesson flow, save it, play it, and step through every cue.","duration":"0:59","group":"teaching","note":"Do not include student information.","slug":"build-custom-classroom-lesson-flow","sourcePath":"docs/release/beta-shorts/build-custom-classroom-lesson-flow/build-custom-classroom-lesson-flow.mp4","title":"Build a custom classroom lesson flow","videoSrc":"../assets/demo/build-custom-classroom-lesson-flow.mp4"},{"audienceLabel":"Personal focus routines","cta":"Build one focus routine and tell us whether it helped you stay off the clock.","description":"Create a Pomodoro focus and break routine, save it, play it, and step through every cue.","duration":"0:54","group":"focus","slug":"build-custom-pomodoro-routine","sourcePath":"docs/release/beta-shorts/build-custom-pomodoro-routine/build-custom-pomodoro-routine.mp4","title":"Build a custom Pomodoro routine","videoSrc":"../assets/demo/build-custom-pomodoro-routine.mp4"}];
+        const demoShortBySlug = new Map(demoShorts.map((short) => [short.slug, short]));
+        const defaultDemoSlug = "mobility-over-music";
+        const video = document.querySelector('#demo-video');
+        const source = document.querySelector('#demo-video-source');
+        const title = document.querySelector('#demo-title');
+        const audience = document.querySelector('#demo-audience');
+        const group = document.querySelector('#demo-group');
+        const duration = document.querySelector('#demo-duration');
+        const description = document.querySelector('#demo-description');
+        const cta = document.querySelector('#demo-cta');
+        const note = document.querySelector('#demo-note');
+        const buttons = Array.from(document.querySelectorAll('[data-short-slug]'));
+
+        function activeSlugFromHash() {
+          return decodeURIComponent(window.location.hash.replace(/^#/, ''));
+        }
+
+        function setActiveShort(slug, options = {}) {
+          const selected = demoShortBySlug.get(slug) ?? demoShortBySlug.get(defaultDemoSlug);
+          if (!selected) {
+            return;
+          }
+
+          if (source.getAttribute('src') !== selected.videoSrc) {
+            source.setAttribute('src', selected.videoSrc);
+            video.load();
+          }
+
+          title.textContent = selected.title;
+          audience.textContent = selected.audienceLabel;
+          group.textContent = selected.group;
+          duration.textContent = selected.duration;
+          description.textContent = selected.description;
+          cta.textContent = selected.cta;
+          note.textContent = selected.note ?? '';
+          note.hidden = !selected.note;
+
+          for (const button of buttons) {
+            const isActive = button.dataset.shortSlug === selected.slug;
+            button.setAttribute('aria-pressed', String(isActive));
+          }
+
+          if (options.updateHash && window.location.hash !== '#' + selected.slug) {
+            history.pushState(null, '', '#' + selected.slug);
+          }
+        }
+
+        for (const button of buttons) {
+          button.addEventListener('click', () => {
+            setActiveShort(button.dataset.shortSlug, { updateHash: true });
+          });
+        }
+
+        window.addEventListener('hashchange', () => {
+          setActiveShort(activeSlugFromHash());
+        });
+
+        setActiveShort(activeSlugFromHash() || defaultDemoSlug);
+      </script></main>
     <footer>
       <div class="footer-inner">
         <a href="../support/">Support</a> · <a href="../privacy/">Privacy</a>
