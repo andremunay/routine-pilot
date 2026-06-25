@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Routine Pilot Beta</title>
+    <meta
+      name="description"
+      content="Routine Pilot beta testers help validate local-first timed cue routines with speech, sounds, haptics, external audio, and local routine transfer."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #151615;
+        --muted: #58615d;
+        --quiet: #eef3ed;
+        --paper: #f8faf7;
+        --surface: #ffffff;
+        --teal: #0e6860;
+        --blue: #3546a5;
+        --coral: #d6503f;
+        --field: #9bbb38;
+        --line: rgba(21, 22, 21, 0.16);
+        --soft-line: rgba(21, 22, 21, 0.08);
+        --shadow: 0 26px 80px rgba(21, 22, 21, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Georgia, 'Times New Roman', serif;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .hero {
+        min-height: 76svh;
+        display: grid;
+        align-items: center;
+        padding: clamp(26px, 5vw, 72px);
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        background:
+          linear-gradient(
+            90deg,
+            rgba(248, 250, 247, 0.98) 0%,
+            rgba(248, 250, 247, 0.88) 42%,
+            rgba(248, 250, 247, 0.32) 100%
+          ),
+          url('assets/screenshots/playback.png') right 8% bottom -52px /
+            min(48vw, 560px) auto no-repeat,
+          var(--quiet);
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background:
+          linear-gradient(135deg, rgba(14, 104, 96, 0.12), transparent 42%),
+          linear-gradient(315deg, rgba(214, 80, 63, 0.14), transparent 36%);
+      }
+
+      .hero::after {
+        content: '';
+        position: absolute;
+        inset: auto 0 0;
+        height: 8px;
+        z-index: -1;
+        background: linear-gradient(90deg, var(--teal), var(--coral), var(--blue), var(--field));
+      }
+
+      .hero-copy {
+        width: min(720px, 100%);
+        display: grid;
+        gap: 22px;
+      }
+
+      .brand-mark {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .eyebrow,
+      .section-kicker,
+      .mini-label {
+        margin: 0;
+        font:
+          700 0.78rem/1.15 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .eyebrow {
+        color: var(--teal);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 10ch;
+        font-size: clamp(3.4rem, 10vw, 8.2rem);
+        line-height: 0.88;
+        font-weight: 700;
+      }
+
+      h2 {
+        font-size: clamp(2.1rem, 4.8vw, 4.5rem);
+        line-height: 0.96;
+      }
+
+      h3 {
+        font-size: 1.08rem;
+        line-height: 1.22;
+      }
+
+      .lead {
+        max-width: 58ch;
+        color: var(--muted);
+        font-size: clamp(1.08rem, 2vw, 1.42rem);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 8px;
+        padding: 12px 18px;
+        background: var(--ink);
+        color: var(--surface);
+        font:
+          700 0.94rem/1 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
+        text-decoration: none;
+        transition:
+          background-color 160ms ease,
+          border-color 160ms ease,
+          color 160ms ease,
+          transform 160ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button.secondary {
+        background: transparent;
+        color: var(--ink);
+      }
+
+      .button.demo {
+        border-color: var(--teal);
+        background: var(--teal);
+      }
+
+      main {
+        display: grid;
+        gap: clamp(36px, 7vw, 86px);
+        padding: clamp(30px, 6vw, 76px);
+      }
+
+      .section {
+        max-width: 1120px;
+        width: 100%;
+        margin-inline: auto;
+      }
+
+      .section-kicker {
+        margin-bottom: 12px;
+        color: var(--coral);
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(300px, 1.14fr);
+        gap: clamp(24px, 5vw, 64px);
+        align-items: start;
+      }
+
+      .body-stack {
+        display: grid;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .install-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
+        gap: clamp(20px, 4vw, 42px);
+        align-items: stretch;
+      }
+
+      .demo-panel {
+        min-height: 440px;
+        display: grid;
+        align-content: end;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 24px;
+        background:
+          linear-gradient(180deg, rgba(21, 22, 21, 0) 0%, rgba(21, 22, 21, 0.68) 78%),
+          url('assets/screenshots/playback.png') center top / min(88%, 390px)
+            auto no-repeat,
+          #dfe8e5;
+        color: var(--surface);
+        text-decoration: none;
+      }
+
+      .play-dot {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.68);
+        border-radius: 50%;
+        margin-bottom: 16px;
+        background: rgba(21, 22, 21, 0.62);
+        font:
+          700 1.2rem/1 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
+      }
+
+      .play-icon {
+        width: 0;
+        height: 0;
+        margin-left: 4px;
+        border-bottom: 9px solid transparent;
+        border-left: 14px solid var(--surface);
+        border-top: 9px solid transparent;
+      }
+
+      .demo-panel p {
+        max-width: 32ch;
+        color: rgba(255, 255, 255, 0.84);
+      }
+
+      .link-list {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .link-row {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        border-bottom: 1px solid var(--line);
+        padding: 16px 0;
+        text-decoration: none;
+      }
+
+      .link-row strong {
+        display: block;
+        font-size: 1.04rem;
+      }
+
+      .link-row span {
+        color: var(--muted);
+        font-family: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', monospace;
+        font-size: 0.86rem;
+        text-align: right;
+      }
+
+      .task-kit-link {
+        margin-top: 18px;
+      }
+
+      .profile-grid,
+      .task-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .task-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .profile,
+      .task,
+      .note {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        padding: 18px;
+      }
+
+      .profile {
+        min-height: 154px;
+        display: grid;
+        align-content: space-between;
+        gap: 18px;
+      }
+
+      .profile:nth-child(1) {
+        border-top: 6px solid var(--teal);
+      }
+
+      .profile:nth-child(2) {
+        border-top: 6px solid var(--coral);
+      }
+
+      .profile:nth-child(3) {
+        border-top: 6px solid var(--blue);
+      }
+
+      .profile:nth-child(4) {
+        border-top: 6px solid var(--field);
+      }
+
+      .profile:nth-child(5) {
+        border-top: 6px solid var(--ink);
+      }
+
+      .profile:nth-child(6) {
+        border-top: 6px solid var(--muted);
+      }
+
+      .profile p,
+      .task p,
+      .note p {
+        color: var(--muted);
+      }
+
+      .task {
+        min-height: 188px;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: 12px;
+      }
+
+      .mini-label {
+        color: var(--blue);
+      }
+
+      .note {
+        border-left: 7px solid var(--teal);
+      }
+
+      .transfer-note {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
+        gap: clamp(18px, 4vw, 44px);
+        align-items: start;
+      }
+
+      .file-types {
+        display: grid;
+        gap: 10px;
+      }
+
+      .file-pill {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        border: 1px solid var(--soft-line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        background: var(--quiet);
+        font-family: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', monospace;
+      }
+
+      .footer {
+        padding: 28px clamp(30px, 6vw, 76px) 44px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .footer-inner {
+        max-width: 1120px;
+        margin-inline: auto;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          min-height: 74svh;
+          background:
+            linear-gradient(135deg, rgba(14, 104, 96, 0.12), transparent 48%),
+            linear-gradient(315deg, rgba(214, 80, 63, 0.14), transparent 42%), var(--quiet);
+        }
+
+        .split,
+        .install-grid,
+        .transfer-note {
+          grid-template-columns: 1fr;
+        }
+
+        .profile-grid,
+        .task-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 620px) {
+        h1 {
+          max-width: 8ch;
+        }
+
+        .actions {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .profile-grid,
+        .task-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-panel {
+          min-height: 380px;
+          background-size: min(96%, 330px) auto;
+        }
+
+        .link-row {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .link-row span {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-copy">
+        <img class="brand-mark" src="assets/icon.png" alt="Routine Pilot app icon" />
+        <p class="eyebrow">Private beta</p>
+        <h1>Routine Pilot beta</h1>
+        <p class="lead">
+          Help validate a local-first app for building and running timed cue routines with speech,
+          sounds, haptics, and external audio.
+        </p>
+        <nav class="actions" aria-label="Beta actions">
+          <a class="button" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0A%0AApple%20ID%20email%3A%0A%0ADevice%20model%3A%0A">Request iPhone beta access</a>
+          <a class="button secondary" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20Android%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20Android%20testing%20group.%0A%0AGoogle%20account%20email%3A%0A%0ADevice%20model%3A%0A">Request Android beta access</a>
+          <a class="button demo" href="https://andremunay.github.io/routine-pilot/demo/">Watch demo</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="section install-grid" aria-labelledby="install-heading">
+        <a class="demo-panel" href="https://andremunay.github.io/routine-pilot/demo/">
+          <div>
+            <div class="play-dot" aria-hidden="true"><span class="play-icon"></span></div>
+            <p class="mini-label">Short demo</p>
+            <h2 id="install-heading">See the beta path before you install.</h2>
+            <p>
+              A quick walkthrough shows Routine Pilot running a practical cue routine while music
+              keeps playing outside the app.
+            </p>
+          </div>
+        </a>
+        <div class="body-stack">
+          <p class="section-kicker">Install funnel</p>
+          <h2>One page, four jobs.</h2>
+          <p>
+            Use the store beta links to install Routine Pilot, watch the short demo if you want a
+            preview, run one realistic routine, then send practical notes.
+          </p>
+          <div class="link-list" aria-label="Beta install and feedback links">
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0A%0AApple%20ID%20email%3A%0A%0ADevice%20model%3A%0A">
+              <strong>Request iPhone beta access</strong>
+              <span>email beta request</span>
+            </a>
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20Android%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20Android%20testing%20group.%0A%0AGoogle%20account%20email%3A%0A%0ADevice%20model%3A%0A">
+              <strong>Request Android beta access</strong>
+              <span>email beta request</span>
+            </a>
+            <a class="link-row" href="https://andremunay.github.io/routine-pilot/demo/">
+              <strong>Watch the short demo</strong>
+              <span>mobility over music demo</span>
+            </a>
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0A%0AWhere%20did%20you%20get%20stuck%3F%0A%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0A%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0A">
+              <strong>Send beta feedback</strong>
+              <span>email beta notes</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section split" aria-labelledby="profiles-heading">
+        <div>
+          <p class="section-kicker">High-fit testers</p>
+          <h2 id="profiles-heading">People who already run repeatable sessions.</h2>
+          <div class="link-list task-kit-link" aria-label="Tester cohort guide">
+            <a class="link-row" href="cohorts/">
+              <strong>Open the cohort guide</strong>
+              <span>who to invite first</span>
+            </a>
+          </div>
+        </div>
+        <div class="profile-grid">
+          <article class="profile">
+            <h3>Fitness and mobility coaches</h3>
+            <p>Test cue timing, work/rest changes, and music-friendly playback.</p>
+          </article>
+          <article class="profile">
+            <h3>Breathwork and yoga facilitators</h3>
+            <p>Check pacing, spoken prompts, haptics, and hands-free guidance.</p>
+          </article>
+          <article class="profile">
+            <h3>Teachers and workshop leads</h3>
+            <p>Try repeatable classroom, facilitation, or activity transitions.</p>
+          </article>
+          <article class="profile">
+            <h3>Therapy or rehab-adjacent pros</h3>
+            <p>Use only appropriate non-medical routines and report handoff friction.</p>
+          </article>
+          <article class="profile">
+            <h3>Focus-tool users</h3>
+            <p>Run personal timing flows without watching a clock.</p>
+          </article>
+          <article class="profile">
+            <h3>Creators with repeatable routines</h3>
+            <p>Tell us whether local files are enough before link or QR sharing exists.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="task-heading">
+        <p class="section-kicker">First task</p>
+        <h2 id="task-heading">Try one realistic routine, then report what happened.</h2>
+        <div class="task-grid">
+          <article class="task">
+            <p class="mini-label">Run</p>
+            <div>
+              <h3>Start with Norwegian 4x4</h3>
+              <p>
+                Play music or another audio source, then open Presets, choose Norwegian 4x4, save
+                the draft, and run it from the Library.
+              </p>
+            </div>
+          </article>
+          <article class="task">
+            <p class="mini-label">Author</p>
+            <div>
+              <h3>Create or edit one routine</h3>
+              <p>Add speech, sound, or haptic cues, save it, and run the result.</p>
+            </div>
+          </article>
+          <article class="task">
+            <p class="mini-label">Explore</p>
+            <div>
+              <h3>Try a preset or builder</h3>
+              <p>Generate a starter routine, adjust it, and see if the draft feels useful.</p>
+            </div>
+          </article>
+          <article class="task">
+            <p class="mini-label">Transfer</p>
+            <div>
+              <h3>Import or export a file</h3>
+              <p>
+                Use local routine transfer, and optionally test a custom sound or voice setting.
+              </p>
+            </div>
+          </article>
+        </div>
+        <div class="link-list task-kit-link" aria-label="Tester task kit">
+          <a class="link-row" href="task-kit/">
+            <strong>Open the full tester task kit</strong>
+            <span>20-30 minute checklist</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section transfer-note" aria-labelledby="transfer-heading">
+        <div>
+          <p class="section-kicker">Current sharing reality</p>
+          <h2 id="transfer-heading">Local files today, publishable links later.</h2>
+        </div>
+        <div class="body-stack">
+          <p>
+            Routine Pilot does not yet publish routines by link or QR code. In this beta, routines
+            move through local export and import. Built-in-only routines can export as JSON;
+            routines with ready custom sounds can export as Routine Pilot archives.
+          </p>
+          <div class="file-types" aria-label="Supported local transfer formats">
+            <div class="file-pill">
+              <strong>.json</strong>
+              <span>built-in sounds only</span>
+            </div>
+            <div class="file-pill">
+              <strong>.routinepilot</strong>
+              <span>routine plus ready custom sounds</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section split" aria-labelledby="feedback-heading">
+        <div>
+          <p class="section-kicker">Feedback</p>
+          <h2 id="feedback-heading">Simple notes beat polished reports.</h2>
+        </div>
+        <div class="body-stack">
+          <p>
+            Tell us what you tried, where you got stuck, whether you would use Routine Pilot again,
+            and whether you wanted to hand a routine to someone else.
+          </p>
+          <div class="link-list">
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0A%0AWhere%20did%20you%20get%20stuck%3F%0A%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0A%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0A">
+              <strong>Email beta feedback</strong>
+              <span>email beta notes</span>
+            </a>
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0A%0AWhere%20did%20you%20get%20stuck%3F%0A%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0A%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0A">
+              <strong>Email support</strong>
+              <span>direct beta notes</span>
+            </a>
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0A%0AApple%20ID%20email%3A%0A%0ADevice%20model%3A%0A">
+              <strong>iPhone beta access</strong>
+              <span>email beta request</span>
+            </a>
+            <a class="link-row" href="task-kit/">
+              <strong>Tester task kit</strong>
+              <span>what to try and report</span>
+            </a>
+          </div>
+          <div class="note">
+            <h3>Privacy default</h3>
+            <p>
+              This page contains no analytics or tracking scripts. Routine Pilot keeps authoring and
+              playback local-first. Optional diagnostics in beta builds require explicit opt-in and
+              avoid routine names, cue text, tags, custom sound names, voice IDs, contacts, health
+              data, location, and free text.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <a href="support/">Support</a> · <a href="privacy/">Privacy</a> ·
+        Routine Pilot beta.
+      </div>
+    </footer>
+  </body>
+</html>
