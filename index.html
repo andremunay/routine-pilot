@@ -401,6 +401,84 @@
         font-family: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', monospace;
       }
 
+      .email-choice-dialog {
+        width: min(620px, calc(100% - 32px));
+        max-width: none;
+        border: 0;
+        border-radius: 12px;
+        padding: 0;
+        background: transparent;
+        color: var(--ink);
+        box-shadow: var(--shadow);
+      }
+
+      .email-choice-dialog::backdrop {
+        background: rgba(21, 22, 21, 0.66);
+      }
+
+      .email-choice-panel {
+        display: grid;
+        gap: 18px;
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: clamp(24px, 5vw, 38px);
+        background: var(--surface);
+      }
+
+      .email-choice-panel h2 {
+        padding-right: 42px;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+      }
+
+      .email-choice-copy,
+      .email-choice-meta {
+        color: var(--muted);
+      }
+
+      .email-choice-meta {
+        border: 1px solid var(--soft-line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        background: var(--quiet);
+        font-family: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', monospace;
+        font-size: 0.84rem;
+        overflow-wrap: anywhere;
+      }
+
+      .email-choice-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .email-choice-close {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: var(--paper);
+        color: var(--ink);
+        cursor: pointer;
+        font:
+          700 1.2rem/1 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
+      }
+
+      .button:focus-visible,
+      .link-row:focus-visible,
+      .email-choice-close:focus-visible {
+        outline: 3px solid rgba(53, 70, 165, 0.38);
+        outline-offset: 3px;
+      }
+
       .footer {
         padding: 28px clamp(30px, 6vw, 76px) 44px;
         color: var(--muted);
@@ -446,6 +524,10 @@
           width: 100%;
         }
 
+        .email-choice-actions {
+          grid-template-columns: 1fr;
+        }
+
         .profile-grid,
         .task-grid {
           grid-template-columns: 1fr;
@@ -479,8 +561,8 @@
           sounds, haptics, and external audio.
         </p>
         <nav class="actions" aria-label="Beta actions">
-          <a class="button" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0A%0AApple%20ID%20email%3A%0A%0ADevice%20model%3A%0A">Request iPhone beta access</a>
-          <a class="button secondary" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20Android%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20Android%20testing%20group.%0A%0AGoogle%20account%20email%3A%0A%0ADevice%20model%3A%0A">Request Android beta access</a>
+          <a class="button" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0D%0A%0D%0AApple%20ID%20email%3A%0D%0A%0D%0ADevice%20model%3A%0D%0A" data-email-choice data-webmail-url="https://mail.google.com/mail/?extsrc=mailto&amp;url=mailto%3Aandremunay%40gmail.com%3Fsubject%3DRoutine%2520Pilot%2520iOS%2520beta%2520access%26body%3DPlease%2520add%2520me%2520to%2520the%2520Routine%2520Pilot%2520TestFlight%2520beta.%250D%250A%250D%250AApple%2520ID%2520email%253A%250D%250A%250D%250ADevice%2520model%253A%250D%250A" aria-haspopup="dialog">Request iPhone beta access</a>
+          <a class="button secondary" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20Android%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20Android%20testing%20group.%0D%0A%0D%0AGoogle%20account%20email%3A%0D%0A%0D%0ADevice%20model%3A%0D%0A" data-email-choice data-webmail-url="https://mail.google.com/mail/?extsrc=mailto&amp;url=mailto%3Aandremunay%40gmail.com%3Fsubject%3DRoutine%2520Pilot%2520Android%2520beta%2520access%26body%3DPlease%2520add%2520me%2520to%2520the%2520Routine%2520Pilot%2520Android%2520testing%2520group.%250D%250A%250D%250AGoogle%2520account%2520email%253A%250D%250A%250D%250ADevice%2520model%253A%250D%250A" aria-haspopup="dialog">Request Android beta access</a>
           <a class="button secondary" href="https://routinepilot.pages.dev/" target="_blank" rel="noopener noreferrer">Open web beta</a>
           <a class="button demo" href="https://andremunay.github.io/routine-pilot/demo/">Choose a demo</a>
         </nav>
@@ -508,11 +590,11 @@
             preview, run one realistic routine, then send practical notes.
           </p>
           <div class="link-list" aria-label="Beta install and feedback links">
-            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0A%0AApple%20ID%20email%3A%0A%0ADevice%20model%3A%0A">
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0D%0A%0D%0AApple%20ID%20email%3A%0D%0A%0D%0ADevice%20model%3A%0D%0A" data-email-choice data-webmail-url="https://mail.google.com/mail/?extsrc=mailto&amp;url=mailto%3Aandremunay%40gmail.com%3Fsubject%3DRoutine%2520Pilot%2520iOS%2520beta%2520access%26body%3DPlease%2520add%2520me%2520to%2520the%2520Routine%2520Pilot%2520TestFlight%2520beta.%250D%250A%250D%250AApple%2520ID%2520email%253A%250D%250A%250D%250ADevice%2520model%253A%250D%250A" aria-haspopup="dialog">
               <strong>Request iPhone beta access</strong>
               <span>email beta request</span>
             </a>
-            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20Android%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20Android%20testing%20group.%0A%0AGoogle%20account%20email%3A%0A%0ADevice%20model%3A%0A">
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20Android%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20Android%20testing%20group.%0D%0A%0D%0AGoogle%20account%20email%3A%0D%0A%0D%0ADevice%20model%3A%0D%0A" data-email-choice data-webmail-url="https://mail.google.com/mail/?extsrc=mailto&amp;url=mailto%3Aandremunay%40gmail.com%3Fsubject%3DRoutine%2520Pilot%2520Android%2520beta%2520access%26body%3DPlease%2520add%2520me%2520to%2520the%2520Routine%2520Pilot%2520Android%2520testing%2520group.%250D%250A%250D%250AGoogle%2520account%2520email%253A%250D%250A%250D%250ADevice%2520model%253A%250D%250A" aria-haspopup="dialog">
               <strong>Request Android beta access</strong>
               <span>email beta request</span>
             </a>
@@ -656,11 +738,11 @@
               <strong>Feedback form</strong>
               <span>short tester form</span>
             </a>
-            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0A%0AWhere%20did%20you%20get%20stuck%3F%0A%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0A%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0A">
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20beta%20feedback&amp;body=What%20did%20you%20try%3F%0D%0A%0D%0AWhere%20did%20you%20get%20stuck%3F%0D%0A%0D%0AWould%20you%20use%20Routine%20Pilot%20again%3F%0D%0A%0D%0ADid%20you%20want%20to%20hand%20a%20routine%20to%20someone%20else%3F%0D%0A">
               <strong>Email support</strong>
               <span>direct beta notes</span>
             </a>
-            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0A%0AApple%20ID%20email%3A%0A%0ADevice%20model%3A%0A">
+            <a class="link-row" href="mailto:andremunay@gmail.com?subject=Routine%20Pilot%20iOS%20beta%20access&amp;body=Please%20add%20me%20to%20the%20Routine%20Pilot%20TestFlight%20beta.%0D%0A%0D%0AApple%20ID%20email%3A%0D%0A%0D%0ADevice%20model%3A%0D%0A" data-email-choice data-webmail-url="https://mail.google.com/mail/?extsrc=mailto&amp;url=mailto%3Aandremunay%40gmail.com%3Fsubject%3DRoutine%2520Pilot%2520iOS%2520beta%2520access%26body%3DPlease%2520add%2520me%2520to%2520the%2520Routine%2520Pilot%2520TestFlight%2520beta.%250D%250A%250D%250AApple%2520ID%2520email%253A%250D%250A%250D%250ADevice%2520model%253A%250D%250A" aria-haspopup="dialog">
               <strong>iPhone beta access</strong>
               <span>email beta request</span>
             </a>
@@ -683,11 +765,97 @@
       </section>
     </main>
 
+    <dialog
+      class="email-choice-dialog"
+      id="email-choice-dialog"
+      aria-labelledby="email-choice-title"
+      aria-describedby="email-choice-description"
+    >
+      <div class="email-choice-panel">
+        <button
+          class="email-choice-close"
+          type="button"
+          data-email-choice-close
+          aria-label="Close email options"
+        >
+          ×
+        </button>
+        <p class="section-kicker">Beta access email</p>
+        <h2 id="email-choice-title">Choose how to write your request.</h2>
+        <p class="email-choice-copy" id="email-choice-description">
+          Both options prefill the same message. Nothing is sent until you review it and press Send.
+        </p>
+        <p class="email-choice-meta">
+          To: <strong id="email-choice-recipient"></strong><br />
+          Subject: <strong id="email-choice-subject"></strong>
+        </p>
+        <div class="email-choice-actions">
+          <a class="button" id="email-choice-webmail" target="_blank" rel="noopener noreferrer">
+            Open Gmail in browser
+          </a>
+          <a class="button secondary" id="email-choice-device">Use default email app</a>
+        </div>
+      </div>
+    </dialog>
+
     <footer class="footer">
       <div class="footer-inner">
         <a href="support/">Support</a> · <a href="privacy/">Privacy</a> · Routine
         Pilot beta.
       </div>
     </footer>
+
+    <script>
+      const emailChoiceDialog = document.querySelector('#email-choice-dialog');
+      const emailChoiceRecipient = document.querySelector('#email-choice-recipient');
+      const emailChoiceSubject = document.querySelector('#email-choice-subject');
+      const emailChoiceWebmail = document.querySelector('#email-choice-webmail');
+      const emailChoiceDevice = document.querySelector('#email-choice-device');
+      const emailChoiceTriggers = Array.from(document.querySelectorAll('[data-email-choice]'));
+      let activeEmailChoiceTrigger = null;
+
+      for (const trigger of emailChoiceTriggers) {
+        trigger.addEventListener('click', (event) => {
+          const mailtoHref = trigger.getAttribute('href');
+          const webmailHref = trigger.dataset.webmailUrl;
+          if (
+            typeof emailChoiceDialog.showModal !== 'function' ||
+            !mailtoHref?.startsWith('mailto:') ||
+            !webmailHref?.startsWith('https://mail.google.com/')
+          ) {
+            return;
+          }
+
+          event.preventDefault();
+          const mailtoUrl = new URL(mailtoHref);
+          activeEmailChoiceTrigger = trigger;
+          emailChoiceRecipient.textContent = mailtoUrl.pathname;
+          emailChoiceSubject.textContent =
+            mailtoUrl.searchParams.get('subject') ?? 'Routine Pilot beta access';
+          emailChoiceWebmail.setAttribute('href', webmailHref);
+          emailChoiceDevice.setAttribute('href', mailtoHref);
+          emailChoiceDialog.showModal();
+        });
+      }
+
+      for (const closeControl of document.querySelectorAll('[data-email-choice-close]')) {
+        closeControl.addEventListener('click', () => emailChoiceDialog.close());
+      }
+
+      for (const emailLink of [emailChoiceWebmail, emailChoiceDevice]) {
+        emailLink.addEventListener('click', () => emailChoiceDialog.close());
+      }
+
+      emailChoiceDialog.addEventListener('click', (event) => {
+        if (event.target === emailChoiceDialog) {
+          emailChoiceDialog.close();
+        }
+      });
+
+      emailChoiceDialog.addEventListener('close', () => {
+        activeEmailChoiceTrigger?.focus();
+        activeEmailChoiceTrigger = null;
+      });
+    </script>
   </body>
 </html>
