@@ -402,11 +402,14 @@
       }
 
       .email-choice-dialog {
-        width: min(620px, calc(100% - 32px));
+        width: min(680px, calc(100% - 32px));
         max-width: none;
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
         border: 0;
         border-radius: 12px;
         padding: 0;
+        overflow: hidden;
         background: transparent;
         color: var(--ink);
         box-shadow: var(--shadow);
@@ -420,9 +423,12 @@
         display: grid;
         gap: 18px;
         position: relative;
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
         border: 1px solid var(--line);
         border-radius: 12px;
         padding: clamp(24px, 5vw, 38px);
+        overflow-y: auto;
         background: var(--surface);
       }
 
@@ -431,25 +437,85 @@
         font-size: clamp(2rem, 5vw, 3.2rem);
       }
 
-      .email-choice-copy,
-      .email-choice-meta {
+      .email-choice-copy {
         color: var(--muted);
       }
 
+      .email-choice-copy strong {
+        color: var(--ink);
+      }
+
       .email-choice-meta {
+        display: grid;
         border: 1px solid var(--soft-line);
         border-radius: 8px;
-        padding: 14px 16px;
+        overflow: hidden;
         background: var(--quiet);
+      }
+
+      .email-choice-field {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: start;
+        padding: 14px 16px;
+      }
+
+      .email-choice-field + .email-choice-field {
+        border-top: 1px solid var(--soft-line);
+      }
+
+      .email-choice-field-label,
+      .email-choice-field-value,
+      .email-choice-copy-status {
         font-family: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', monospace;
-        font-size: 0.84rem;
+      }
+
+      .email-choice-field-label {
+        margin-bottom: 5px;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .email-choice-field-value {
+        margin: 0;
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 700;
+        line-height: 1.55;
         overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+
+      .email-choice-copy-button {
+        min-width: 72px;
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 8px 10px;
+        background: var(--surface);
+        color: var(--teal);
+        cursor: pointer;
+        font:
+          700 0.74rem/1 ui-monospace,
+          'Cascadia Mono',
+          'SFMono-Regular',
+          monospace;
       }
 
       .email-choice-actions {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
+      }
+
+      .email-choice-copy-status {
+        min-height: 1.3em;
+        color: var(--muted);
+        font-size: 0.76rem;
       }
 
       .email-choice-close {
@@ -474,6 +540,7 @@
 
       .button:focus-visible,
       .link-row:focus-visible,
+      .email-choice-copy-button:focus-visible,
       .email-choice-close:focus-visible {
         outline: 3px solid rgba(53, 70, 165, 0.38);
         outline-offset: 3px;
@@ -783,12 +850,58 @@
         <p class="section-kicker">Beta access email</p>
         <h2 id="email-choice-title">Choose how to write your request.</h2>
         <p class="email-choice-copy" id="email-choice-description">
-          Both options prefill the same message. Nothing is sent until you review it and press Send.
+          <strong>Gmail is most reliable when you keep the draft in your browser.</strong> If Gmail
+          asks app or browser, choose browser. Other email apps may open a blank draft, so the full
+          request stays available below. Nothing is sent until you review it and press Send.
         </p>
-        <p class="email-choice-meta">
-          To: <strong id="email-choice-recipient"></strong><br />
-          Subject: <strong id="email-choice-subject"></strong>
-        </p>
+        <div class="email-choice-meta" aria-label="Beta access email details">
+          <div class="email-choice-field">
+            <div>
+              <p class="email-choice-field-label">To</p>
+              <p class="email-choice-field-value" id="email-choice-recipient"></p>
+            </div>
+            <button
+              class="email-choice-copy-button"
+              type="button"
+              aria-label="Copy email recipient"
+              data-email-copy-target="email-choice-recipient"
+              data-email-copy-label="Recipient"
+            >
+              Copy
+            </button>
+          </div>
+          <div class="email-choice-field">
+            <div>
+              <p class="email-choice-field-label">Subject</p>
+              <p class="email-choice-field-value" id="email-choice-subject"></p>
+            </div>
+            <button
+              class="email-choice-copy-button"
+              type="button"
+              aria-label="Copy email subject"
+              data-email-copy-target="email-choice-subject"
+              data-email-copy-label="Subject"
+            >
+              Copy
+            </button>
+          </div>
+          <div class="email-choice-field">
+            <div>
+              <p class="email-choice-field-label">Message</p>
+              <pre class="email-choice-field-value" id="email-choice-body"></pre>
+            </div>
+            <button
+              class="email-choice-copy-button"
+              type="button"
+              aria-label="Copy email message"
+              data-email-copy-target="email-choice-body"
+              data-email-copy-label="Message"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+        <p class="email-choice-copy-status" id="email-choice-copy-status" aria-live="polite"></p>
         <div class="email-choice-actions">
           <a class="button" id="email-choice-webmail" target="_blank" rel="noopener noreferrer">
             Open Gmail in browser
@@ -809,10 +922,51 @@
       const emailChoiceDialog = document.querySelector('#email-choice-dialog');
       const emailChoiceRecipient = document.querySelector('#email-choice-recipient');
       const emailChoiceSubject = document.querySelector('#email-choice-subject');
+      const emailChoiceBody = document.querySelector('#email-choice-body');
+      const emailChoiceCopyStatus = document.querySelector('#email-choice-copy-status');
       const emailChoiceWebmail = document.querySelector('#email-choice-webmail');
       const emailChoiceDevice = document.querySelector('#email-choice-device');
       const emailChoiceTriggers = Array.from(document.querySelectorAll('[data-email-choice]'));
+      const emailChoiceCopyButtons = Array.from(
+        document.querySelectorAll('[data-email-copy-target]')
+      );
+      const copyResetTimers = new Map();
       let activeEmailChoiceTrigger = null;
+
+      function resetCopyFeedback() {
+        emailChoiceCopyStatus.textContent = '';
+        for (const button of emailChoiceCopyButtons) {
+          window.clearTimeout(copyResetTimers.get(button));
+          copyResetTimers.delete(button);
+          button.textContent = 'Copy';
+        }
+      }
+
+      function selectEmailField(target) {
+        const selection = window.getSelection();
+        if (!selection) {
+          return false;
+        }
+
+        const range = document.createRange();
+        range.selectNodeContents(target);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        return true;
+      }
+
+      function showCopiedFeedback(button, label) {
+        window.clearTimeout(copyResetTimers.get(button));
+        button.textContent = 'Copied';
+        emailChoiceCopyStatus.textContent = `${label} copied to the clipboard.`;
+        copyResetTimers.set(
+          button,
+          window.setTimeout(() => {
+            button.textContent = 'Copy';
+            copyResetTimers.delete(button);
+          }, 1800)
+        );
+      }
 
       for (const trigger of emailChoiceTriggers) {
         trigger.addEventListener('click', (event) => {
@@ -826,15 +980,49 @@
             return;
           }
 
+          let mailtoUrl;
+          try {
+            mailtoUrl = new URL(mailtoHref);
+          } catch {
+            return;
+          }
+
           event.preventDefault();
-          const mailtoUrl = new URL(mailtoHref);
+          resetCopyFeedback();
           activeEmailChoiceTrigger = trigger;
-          emailChoiceRecipient.textContent = mailtoUrl.pathname;
+          emailChoiceRecipient.textContent = decodeURIComponent(mailtoUrl.pathname);
           emailChoiceSubject.textContent =
             mailtoUrl.searchParams.get('subject') ?? 'Routine Pilot beta access';
+          emailChoiceBody.textContent = mailtoUrl.searchParams.get('body') ?? '';
           emailChoiceWebmail.setAttribute('href', webmailHref);
           emailChoiceDevice.setAttribute('href', mailtoHref);
           emailChoiceDialog.showModal();
+        });
+      }
+
+      for (const button of emailChoiceCopyButtons) {
+        button.addEventListener('click', async () => {
+          const target = document.getElementById(button.dataset.emailCopyTarget);
+          const label = button.dataset.emailCopyLabel ?? 'Field';
+          const value = target?.textContent ?? '';
+          if (!target || value.length === 0) {
+            emailChoiceCopyStatus.textContent = `${label} is unavailable to copy.`;
+            return;
+          }
+
+          try {
+            if (!navigator.clipboard?.writeText) {
+              throw new Error('Clipboard API unavailable');
+            }
+            await navigator.clipboard.writeText(value);
+            showCopiedFeedback(button, label);
+          } catch {
+            if (selectEmailField(target)) {
+              emailChoiceCopyStatus.textContent = `${label} selected. Use your browser's Copy command.`;
+            } else {
+              emailChoiceCopyStatus.textContent = `Select and copy the ${label.toLowerCase()} manually.`;
+            }
+          }
         });
       }
 
@@ -853,6 +1041,7 @@
       });
 
       emailChoiceDialog.addEventListener('close', () => {
+        resetCopyFeedback();
         activeEmailChoiceTrigger?.focus();
         activeEmailChoiceTrigger = null;
       });
