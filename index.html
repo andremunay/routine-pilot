@@ -54,14 +54,7 @@
         isolation: isolate;
         overflow: hidden;
         background:
-          linear-gradient(
-            90deg,
-            rgba(248, 250, 247, 0.98) 0%,
-            rgba(248, 250, 247, 0.88) 42%,
-            rgba(248, 250, 247, 0.32) 100%
-          ),
-          url('assets/screenshots/playback.png') right 8% bottom -52px / min(48vw, 560px) auto
-            no-repeat,
+          url('assets/screenshots/playback.png') right 5% center / min(24vw, 300px) auto no-repeat,
           var(--quiet);
       }
 
@@ -85,7 +78,7 @@
       }
 
       .hero-copy {
-        width: min(720px, 100%);
+        width: min(720px, calc(100% - 330px));
         display: grid;
         gap: 22px;
       }
@@ -225,51 +218,46 @@
         align-items: stretch;
       }
 
-      .demo-panel {
-        min-height: 440px;
+      .app-capture {
+        margin: 0;
+        min-width: 0;
         display: grid;
-        align-content: end;
-        position: relative;
-        overflow: hidden;
+        justify-items: center;
+        gap: 24px;
         border: 1px solid var(--line);
         border-radius: 8px;
-        padding: 24px;
-        background:
-          linear-gradient(180deg, rgba(21, 22, 21, 0) 0%, rgba(21, 22, 21, 0.68) 78%),
-          url('assets/screenshots/playback.png') center top / min(88%, 390px) auto no-repeat,
-          #dfe8e5;
-        color: var(--surface);
-        text-decoration: none;
+        padding: clamp(18px, 3vw, 32px);
+        background: #dfe8e5;
       }
 
-      .play-dot {
-        width: 54px;
-        height: 54px;
+      .app-capture img {
+        display: block;
+        width: min(100%, 320px);
+        height: auto;
+        border: 1px solid #233949;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      .app-capture figcaption {
+        width: 100%;
         display: grid;
-        place-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.68);
-        border-radius: 50%;
-        margin-bottom: 16px;
-        background: rgba(21, 22, 21, 0.62);
-        font:
-          700 1.2rem/1 ui-monospace,
-          'Cascadia Mono',
-          'SFMono-Regular',
-          monospace;
+        gap: 12px;
       }
 
-      .play-icon {
-        width: 0;
-        height: 0;
-        margin-left: 4px;
-        border-bottom: 9px solid transparent;
-        border-left: 14px solid var(--surface);
-        border-top: 9px solid transparent;
+      .app-capture figcaption p {
+        color: var(--muted);
       }
 
-      .demo-panel p {
-        max-width: 32ch;
-        color: rgba(255, 255, 255, 0.84);
+      .app-gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      .app-gallery .app-capture img {
+        width: min(100%, 280px);
       }
 
       .link-list {
@@ -422,6 +410,10 @@
             linear-gradient(315deg, rgba(214, 80, 63, 0.14), transparent 42%), var(--quiet);
         }
 
+        .hero-copy {
+          width: 100%;
+        }
+
         .split,
         .install-grid,
         .transfer-note {
@@ -453,9 +445,8 @@
           grid-template-columns: 1fr;
         }
 
-        .demo-panel {
-          min-height: 380px;
-          background-size: min(96%, 330px) auto;
+        .app-gallery {
+          grid-template-columns: 1fr;
         }
 
         .link-row {
@@ -512,13 +503,20 @@
     </header>
     <main>
       <section class="section install-grid" aria-labelledby="guidance-heading">
-        <div class="demo-panel" role="img" aria-label="Routine Pilot playback screenshot">
-          <div>
-            <p class="mini-label">Authored guidance</p>
+        <figure class="app-capture">
+          <img
+            src="assets/screenshots/playback.png"
+            width="860"
+            height="1864"
+            alt="Current Routine Pilot web playback: Warm up instructions, upcoming phase, timing, Pause and Stop, and the five app tabs."
+            decoding="async"
+          />
+          <figcaption>
+            <p class="mini-label">Authored guidance · Web app</p>
             <h2 id="guidance-heading">Keep the session moving.</h2>
             <p>Timing and transport stay reachable while your complete instructions scroll.</p>
-          </div>
-        </div>
+          </figcaption>
+        </figure>
         <div class="body-stack">
           <p class="section-kicker">Create and run</p>
           <h2>Your words. Your timing.</h2>
@@ -595,6 +593,36 @@
               </p>
             </div>
           </article>
+        </div>
+        <div class="app-gallery" aria-label="Current Routine Pilot authoring screens">
+          <figure class="app-capture">
+            <img
+              src="assets/screenshots/builder.png"
+              width="860"
+              height="1864"
+              alt="Current web cue builder with Repeat, Alternating, and Breathwork choices, breathing phase durations, cycles, and Insert and Extend."
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              <h3>Shape your sequence.</h3>
+              <p>The Breathwork builder inserts ordinary cues into your editable timeline.</p>
+            </figcaption>
+          </figure>
+          <figure class="app-capture">
+            <img
+              src="assets/screenshots/presets.png"
+              width="860"
+              height="1864"
+              alt="Current web Presets browser with 60 local presets, search, category artwork, and Preview and Use actions."
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              <h3>Start from a local preset.</h3>
+              <p>Browse 60 local structures, preview a routine, and make an editable copy.</p>
+            </figcaption>
+          </figure>
         </div>
       </section>
       <section class="section transfer-note" aria-labelledby="transfer-heading">
