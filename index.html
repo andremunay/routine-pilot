@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-3VdmZVvU79V2lpVmZxeEGumz4CqY+M7zQYJZ3VFepc0='; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-XSFmAD/wqgQ1Q0JwKqMEayODunxREOoIxZXDNVokA6I='; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
 <meta name="robots" content="noindex"><title>Cue Captain has moved</title></head>
 <body><h1>Cue Captain has moved</h1><p><a id="continue" href="https://andremunay.github.io/cue-captain/">Continue to Cue Captain</a></p>
 <noscript>Enable JavaScript to carry the complete path, query and routine fragment to the new address.</noscript>
@@ -9,6 +9,9 @@
   let pathname = location.pathname;
   if (base && (pathname === base || pathname.startsWith(base + '/'))) pathname = pathname.slice(base.length);
   if (!pathname) pathname = '/';
+  // Avoid a second provider redirect for the preview directory. Its canonical
+  // slash must be selected before the fragment leaves the isolated old page.
+  if (pathname === '/r') pathname = '/r/';
   const destination = pathname === '/r' || pathname.startsWith('/r/')
     ? 'https://cuecaptain.pages.dev' + pathname
     : "https://andremunay.github.io/cue-captain" + pathname;
